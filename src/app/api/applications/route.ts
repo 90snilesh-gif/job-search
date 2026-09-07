@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { applications, jobs } from "@/db/schema";
 import { applicationCreateSchema } from "@/lib/validation";
 import { getActiveApplicationsWithJobs } from "@/lib/applications";
+import { todayDateString } from "@/lib/date";
 
 export const dynamic = "force-dynamic";
 
@@ -57,12 +58,17 @@ export async function POST(req: Request) {
     jobId = job.id;
   }
 
+  // Auto-stamp dateApplied when creating directly into a non-"saved" status,
+  // so quick-adding an already-applied role doesn't require picking a date.
+  const dateApplied =
+    d.dateApplied ?? (d.status !== "saved" ? todayDateString() : null);
+
   const [created] = await db
     .insert(applications)
     .values({
       jobId,
       status: d.status,
-      dateApplied: d.dateApplied ?? null,
+      dateApplied,
       resumeVersion: d.resumeVersion ?? null,
       coverLetterVersion: d.coverLetterVersion ?? null,
       nextAction: d.nextAction ?? null,
