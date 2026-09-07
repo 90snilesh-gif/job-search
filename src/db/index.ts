@@ -30,6 +30,10 @@ const client =
   postgres(connectionString, {
     prepare: false, // required for pgBouncer transaction pooling
     max: 1,
+    // Supabase's pooler requires TLS. postgres.js won't negotiate it
+    // automatically from a plain "postgresql://" URL, so request it
+    // explicitly; `require` still validates the cert chain.
+    ssl: "require",
   });
 
 if (process.env.NODE_ENV !== "production") {
