@@ -1,0 +1,156 @@
+{
+  "id": "a4b00f66-d0e3-43bd-837b-2e0ef0bd7d78",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.applications": {
+      "name": "applications",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "uuid", "primaryKey": true, "notNull": true, "default": "gen_random_uuid()" },
+        "job_id": { "name": "job_id", "type": "uuid", "primaryKey": false, "notNull": true },
+        "status": { "name": "status", "type": "application_status", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'saved'" },
+        "date_applied": { "name": "date_applied", "type": "date", "primaryKey": false, "notNull": false },
+        "resume_version": { "name": "resume_version", "type": "text", "primaryKey": false, "notNull": false },
+        "cover_letter_version": { "name": "cover_letter_version", "type": "text", "primaryKey": false, "notNull": false },
+        "next_action": { "name": "next_action", "type": "text", "primaryKey": false, "notNull": false },
+        "next_action_date": { "name": "next_action_date", "type": "date", "primaryKey": false, "notNull": false },
+        "notes": { "name": "notes", "type": "text", "primaryKey": false, "notNull": false },
+        "archived_at": { "name": "archived_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": false },
+        "last_updated": { "name": "last_updated", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" },
+        "created_at": { "name": "created_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "applications_job_id_jobs_id_fk": {
+          "name": "applications_job_id_jobs_id_fk",
+          "tableFrom": "applications",
+          "tableTo": "jobs",
+          "columnsFrom": ["job_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "uuid", "primaryKey": true, "notNull": true, "default": "gen_random_uuid()" },
+        "name": { "name": "name", "type": "text", "primaryKey": false, "notNull": true },
+        "why_interested": { "name": "why_interested", "type": "text", "primaryKey": false, "notNull": false },
+        "ats_platform": { "name": "ats_platform", "type": "ats_platform", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'unknown'" },
+        "ats_slug": { "name": "ats_slug", "type": "text", "primaryKey": false, "notNull": false },
+        "target_priority": { "name": "target_priority", "type": "target_priority", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'medium'" },
+        "created_at": { "name": "created_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" },
+        "updated_at": { "name": "updated_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.contacts": {
+      "name": "contacts",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "uuid", "primaryKey": true, "notNull": true, "default": "gen_random_uuid()" },
+        "name": { "name": "name", "type": "text", "primaryKey": false, "notNull": true },
+        "company": { "name": "company", "type": "text", "primaryKey": false, "notNull": false },
+        "role_title": { "name": "role_title", "type": "text", "primaryKey": false, "notNull": false },
+        "linkedin_url": { "name": "linkedin_url", "type": "text", "primaryKey": false, "notNull": false },
+        "email": { "name": "email", "type": "text", "primaryKey": false, "notNull": false },
+        "relationship": { "name": "relationship", "type": "contact_relationship", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'cold'" },
+        "status": { "name": "status", "type": "contact_status", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'to_contact'" },
+        "last_touchpoint_date": { "name": "last_touchpoint_date", "type": "date", "primaryKey": false, "notNull": false },
+        "follow_up_date": { "name": "follow_up_date", "type": "date", "primaryKey": false, "notNull": false },
+        "notes": { "name": "notes", "type": "text", "primaryKey": false, "notNull": false },
+        "created_at": { "name": "created_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" },
+        "updated_at": { "name": "updated_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.jobs": {
+      "name": "jobs",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "uuid", "primaryKey": true, "notNull": true, "default": "gen_random_uuid()" },
+        "company": { "name": "company", "type": "text", "primaryKey": false, "notNull": true },
+        "role_title": { "name": "role_title", "type": "text", "primaryKey": false, "notNull": true },
+        "jd_text": { "name": "jd_text", "type": "text", "primaryKey": false, "notNull": false },
+        "jd_url": { "name": "jd_url", "type": "text", "primaryKey": false, "notNull": false },
+        "source": { "name": "source", "type": "job_source", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'manual'" },
+        "location": { "name": "location", "type": "text", "primaryKey": false, "notNull": false },
+        "remote_type": { "name": "remote_type", "type": "text", "primaryKey": false, "notNull": false },
+        "salary_range": { "name": "salary_range", "type": "text", "primaryKey": false, "notNull": false },
+        "date_found": { "name": "date_found", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" },
+        "fit_score": { "name": "fit_score", "type": "integer", "primaryKey": false, "notNull": false },
+        "fit_notes": { "name": "fit_notes", "type": "text", "primaryKey": false, "notNull": false },
+        "fit_input_hash": { "name": "fit_input_hash", "type": "text", "primaryKey": false, "notNull": false },
+        "status": { "name": "status", "type": "job_status", "typeSchema": "public", "primaryKey": false, "notNull": true, "default": "'new'" },
+        "created_at": { "name": "created_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" },
+        "updated_at": { "name": "updated_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.profile": {
+      "name": "profile",
+      "schema": "",
+      "columns": {
+        "id": { "name": "id", "type": "uuid", "primaryKey": true, "notNull": true, "default": "gen_random_uuid()" },
+        "target_role_titles": { "name": "target_role_titles", "type": "text[]", "primaryKey": false, "notNull": true, "default": "'{}'" },
+        "location": { "name": "location", "type": "text[]", "primaryKey": false, "notNull": true, "default": "'{}'" },
+        "work_experience": { "name": "work_experience", "type": "jsonb", "primaryKey": false, "notNull": true, "default": "'[]'::jsonb" },
+        "resume_text": { "name": "resume_text", "type": "text", "primaryKey": false, "notNull": false },
+        "sample_jds": { "name": "sample_jds", "type": "text[]", "primaryKey": false, "notNull": true, "default": "'{}'" },
+        "onboarding_completed_at": { "name": "onboarding_completed_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": false },
+        "created_at": { "name": "created_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" },
+        "updated_at": { "name": "updated_at", "type": "timestamp with time zone", "primaryKey": false, "notNull": true, "default": "now()" }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.application_status": { "name": "application_status", "schema": "public", "values": ["saved", "applied", "phone_screen", "interview", "offer", "rejected", "withdrawn"] },
+    "public.ats_platform": { "name": "ats_platform", "schema": "public", "values": ["greenhouse", "lever", "ashby", "other", "unknown"] },
+    "public.contact_relationship": { "name": "contact_relationship", "schema": "public", "values": ["1st_degree", "2nd_degree", "cold", "referred_by"] },
+    "public.contact_status": { "name": "contact_status", "schema": "public", "values": ["to_contact", "messaged", "replied", "referred", "declined"] },
+    "public.job_source": { "name": "job_source", "schema": "public", "values": ["manual", "gmail_alert", "ats_api", "hn"] },
+    "public.job_status": { "name": "job_status", "schema": "public", "values": ["new", "reviewing", "discarded", "applied"] },
+    "public.target_priority": { "name": "target_priority", "schema": "public", "values": ["high", "medium", "low"] }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": { "columns": {}, "schemas": {}, "tables": {} }
+}
